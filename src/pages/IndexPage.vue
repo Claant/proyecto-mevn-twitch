@@ -1,23 +1,39 @@
 <template>
   <q-page padding>
-    <q-btn @click="access">Ingresar</q-btn>
+    <q-btn @click="userStore.access">Ingresar</q-btn>
+    <q-btn @click="createLink">Crear Link</q-btn>
+    <q-btn @click="userStore.logout">Cerrar sesion</q-btn>
+    {{ userStore.token }} - {{ userStore.expiresIn }}
+
   </q-page>
 </template>
 
 
 <script setup>
 import { api } from 'src/boot/axios'
-const access = async () => {
+import {useUserStore} from '../stores/user-store'
+
+const userStore = useUserStore();
+userStore.refreshToken();
+
+const createLink = async () => {
   try {
-    const res = await api.post('http://localhost:5000/api/v1/auth/login', {
-      email: 'tono@alumno.com',
-      password: '123123',
+    const res = await api({
+      method: 'POST',
+      url: '/links',
+      headers: {
+        Authorization: 'Bearer ' + userStore.token.value,
+      },
+      data: {
+        longLink: 'https://www.lacuarta.com/',
+      },
     })
     console.log(res.data)
   } catch (error) {
     console.log(error)
   }
 }
+
 </script>
 
 
