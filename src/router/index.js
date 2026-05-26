@@ -27,7 +27,8 @@ export default defineRouter((/* { store, ssrContext } */) => {
     const userStore = useUserStore()
 
     if (requiredAuth) {
-      if (userStore.token) {
+
+      if (userStore.token) {  // valida al usuario o token
         return true // permite continuar
       }
       return '/login' // redirige
