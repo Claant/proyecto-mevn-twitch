@@ -7,8 +7,11 @@
         <q-toolbar-title> Quasar App </q-toolbar-title>
 
         <q-btn color="dark" to="/">Inicio</q-btn>
+        <!--  cuando no exista el token no se va a mostrar por la interfaz el boton login-->
         <q-btn color="green" @click="userStore.access" v-if="!userStore.token">Login</q-btn>
+        <!-- cuando exista el token, se mostrara en la interfaz el boton logout-->
         <q-btn color="red" @click="userStore.logout"  v-if="userStore.token">Logout</q-btn>
+        <!-- cuando exista el token, se mostrara en la interfaz el enlace a la pagina protected-->
         <q-btn color="orange" to="/protected" v-if="userStore.token">Protected</q-btn>
       </q-toolbar>
     </q-header>
