@@ -6,7 +6,10 @@
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn color="dark" to="/">Inicio</q-btn>
+        <q-btn color="green" @click="userStore.access" v-if="!userStore.token">Login</q-btn>
+        <q-btn color="red" @click="userStore.logout"  v-if="userStore.token">Logout</q-btn>
+        <q-btn color="orange" to="/protected" v-if="userStore.token">Protected</q-btn>
       </q-toolbar>
     </q-header>
 
@@ -14,7 +17,7 @@
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        <EssentialLink v-for="link in essentialinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
 
@@ -24,12 +27,22 @@
   </q-layout>
 </template>
 
+
+
 <script setup>
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
-const leftDrawerOpen = ref(false)
+import {useUserStore} from '../stores/user-store'
 
-const linksList = [
+
+const leftDrawerOpen = ref(false)
+const userStore= useUserStore()
+
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+const essentialinks = [
   {
     title: 'Docs',
     caption: 'quasar.dev',
@@ -76,7 +89,7 @@ const linksList = [
 
 
 
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+
+
+
 </script>

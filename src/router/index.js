@@ -6,8 +6,7 @@ import {
   createWebHashHistory,
 } from 'vue-router'
 import routes from './routes'
-
-
+import { useUserStore } from 'src/stores/user-store'
 
 export default defineRouter((/* { store, ssrContext } */) => {
   const createHistory = process.env.SERVER
@@ -21,6 +20,20 @@ export default defineRouter((/* { store, ssrContext } */) => {
     routes,
 
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  })
+
+  Router.beforeEach((to) => {
+    const requiredAuth = to.meta.auth
+    const userStore = useUserStore()
+
+    if (requiredAuth) {
+      if (userStore.token) {
+        return true // permite continuar
+      }
+      return '/login' // redirige
+    }
+
+    return true // permite continuar
   })
 
   return Router
